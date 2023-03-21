@@ -1,56 +1,40 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import dStyles from '@/styles/Home.pc.module.css'
+import mStyles from '@/styles/Home.mobile.module.css'
+import styles from '@/styles/Home.module.css';
+import { Button, Image } from 'antd';
 import { useState } from 'react';
-import { Input, Button, Image } from 'antd';
-import axios from 'axios';
-const { Search } = Input;
+import { PlusOutlined } from '@ant-design/icons';
+
+import GamePopup from './component/GamePopup';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [searchGameList, setGameList] = useState([]);
-  const [gameInfoList, setGameInfoList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [gameInfo, setGameInfo] = useState({});
 
-  const buttonClick = (gameInfo) => {
-    console.log('gameInfo', gameInfo);
-    if (gameInfo && gameInfo.id) {
-      axios.get('/api/getInfoById?id=' + gameInfo.id).then(res => {
-        console.log('getInfoById', res.data);
+  // const styles = isDesktop() ? dStyles : mStyles;
 
-        if (res.status === 200 && res.data && res.data.result) {
-          setGameInfoList(res.data.result);
-        }
-      });
-    }
-  }
+  // 对话框操作相关
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  let imageContent = (gameInfo && gameInfo.url) ? (<Image src={gameInfo.url} preview={false}></Image>)
+    : (<PlusOutlined style={{fontSize: '60px', fontWeight: 700, opacity: .9, color: '#fff'}}/>);
 
 
-  const searchLoop = [];
-  searchGameList.forEach((game,index) => {
-    searchLoop.push(<Button key={index} onClick={() => buttonClick(game)}>{game.name}</Button>);
-  });
+  const handleOk = (game) => {
+      console.log('ok', game);
+      setGameInfo(game);
+      setIsModalOpen(false);
+  };
 
-  const gameLoop = [];
-  gameInfoList.forEach((game,index) => {
-    gameLoop.push(
-      <Image
-      key={index}
-      width={200}
-      src={game.url}
-      />
-    );
-  });
-
-
-  const onSearch = (data) => {
-    axios.get('/api/searchGame?game=' + data).then(res => {
-      if (res.status === 200 && res.data && res.data.result) {
-        setGameList(res.data.result);
-      }
-    });
-  }
-
+  const handleCancel = () => {
+      setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -61,21 +45,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h1>查询游戏封面</h1>
-        <Search
-          width={300}
-          allowClear
-          placeholder='请输入你要查询的游戏名'
-          onSearch={onSearch}>
-        </Search>
-
-        在上面的输入框输入你想搜的游戏名，点击右边的放大镜查询。点击下方出现的游戏名，即可查看该游戏的封面。
-        <div>
-          {searchLoop}
+        <div className={styles.logo}>
+          <svg className={styles.logo} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.6 43.264"><path d="m31.2 29.97 1.911-1.847 1.9-5.67-3.8 3.8zm-4.048-7.506 11.082-11.071-1.578 5.358-9.514 9.267zM23.1 18.5l-.011 3.544L40.023 5.357 41.6 0zM8.593 28.164l2.448 2.405-1.256 1.256.977 2.556 2.072-2.04 2.255 2.223-3.071 3.06 1 2.534 3.876-3.823 2.137 2.1-4.821 4.821h3.726l3-2.953 3 2.953h3.544L6.648 22.446zm-7-22.808 17.4 17.245-.011.011-.011 3.544 1.815-1.783 2.33 2.309-.011 3.382 1.729-1.675 2.373 2.352v3.243l1.654-1.611 2.019 2 .988-2.545L0 .011zM5.018 16.91l9.89 9.782-.011 3.533 1.793-1.772 2.276 2.255-.011 3.479 1.783-1.729L23.1 34.8v3.275l1.665-1.621 3.812 3.78.988-2.545L3.439 11.553z"></path></svg>
         </div>
-        <div>
-          {gameLoop}
+        <div  className={styles.slogan}>Pick Your JOTY!</div>
+        <div className={styles.awardContainer}>
+          <div className={styles.imageContainer} onClick={showModal} >
+            {imageContent}
+          </div>
+          <div className={styles.gameName}>Winner</div>
         </div>
+        <GamePopup open={isModalOpen} onOk={handleOk} onCancel={handleCancel}/>
       </main>
     </>
   )
