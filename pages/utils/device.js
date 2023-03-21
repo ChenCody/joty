@@ -7,3 +7,5 @@ const isWindows = () => Boolean(userAgent.match(/IEMobile/i))
 const isSSR = () => Boolean(userAgent.match(/SSR/i))
 const isMobile = () => Boolean(isAndroid() || isIos() || isOpera() || isWindows())
 const isDesktop = () => Boolean(!isMobile() && !isSSR())
+
+export default isDesktop;
