@@ -74,7 +74,7 @@ export default function GamePopup({open, onOk, onCancel}) {
 
     return (
         <>
-          <Modal title="查询游戏封面"
+          <Modal title="查询游戏"
             footer={null}
             open={open}
             onOk={onOk}
@@ -85,7 +85,7 @@ export default function GamePopup({open, onOk, onCancel}) {
               placeholder='请输入你要查询的游戏名(英文)'
               onSearch={onSearch}>
             </Search>
-            <Alert style={{margin: '10px 0'}} message="在上面的输入框输入你想搜的游戏名，点击右边的放大镜查询。点击下方出现的游戏名，即选择该游戏。" type="info" showIcon />
+            <Alert style={{margin: '10px 0'}} message="在上面的输入框输入你想搜的游戏名搜索。点击下方出现的游戏名，即可选择该游戏封面。" type="info" showIcon />
             {alertNode}
             <div>
               {searchLoop}
