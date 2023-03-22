@@ -8,7 +8,7 @@
     background-size: 100% auto;
 }
 .logo {
-    height: 86px;
+    height: 80px;
     fill: #fff;
     margin-bottom: 20px;
 }
@@ -28,7 +28,7 @@
     align-items: center;
     background: linear-gradient(-45deg,gold,#ffdb51,orange,#fff,#ff8c00,#cfb53b) 0 0 /600% 600%;
     width: 100%;
-    min-height: 300px;
+    min-height: 260px;
     padding: 7px;
     animation: gradient 15s ease 0s infinite normal none running;
 }

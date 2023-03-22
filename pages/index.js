@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import dStyles from '@/styles/Home.pc.module.css'
 import mStyles from '@/styles/Home.mobile.module.css'
 import styles from '@/styles/Home.module.css';
-import { Button, Image } from 'antd';
+import { Image } from 'antd';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -27,10 +27,16 @@ export default function Home() {
 
 
   const handleOk = (game) => {
-      console.log('ok', game);
       setGameInfo(game);
       setIsModalOpen(false);
   };
+
+  const handleUpload = (image) => {
+    setGameInfo({
+      url: image
+    });
+    setIsModalOpen(false);
+  }
 
   const handleCancel = () => {
       setIsModalOpen(false);
@@ -59,7 +65,11 @@ export default function Home() {
           <p className={styles.nominateText} contentEditable={true} suppressContentEditableWarning={true}>&quot;不配文不算提交啊（点我修改）&quot;</p>
           <p className={styles.nominee} contentEditable={true} suppressContentEditableWarning={true}>——桶</p>
         </div>
-        <GamePopup open={isModalOpen} onOk={handleOk} onCancel={handleCancel}/>
+        <GamePopup
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          onUpload={handleUpload}/>
       </main>
     </>
   )

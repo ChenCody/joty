@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Input, Button, Image, Modal, Spin, Alert, Space } from 'antd';
+import { Input, Button, Image, Modal, Spin, Alert, Upload, UploadOutlined } from 'antd';
 import axios from 'axios';
 const { Search } = Input;
 
-export default function GamePopup({open, onOk, onCancel}) {
+export default function GamePopup({open, onOk, onCancel, onUpload}) {
     const [searchGameList, setGameList] = useState([]);
     const [gameInfoList, setGameInfoList] = useState([]);
     const [alertText, setAlertText] = useState('');
@@ -70,15 +70,40 @@ export default function GamePopup({open, onOk, onCancel}) {
     }
 
     let alertNode = alertText ? (<Alert style={{margin: '10px 0'}} message={alertText} type="warning" showIcon />) : (<div></div>);
+    
 
+    const getBase64 = (file) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+    });
+      const handlePreview = (file) => {
+
+      }
+      const handleChange = (file) => {
+        console.log(file.file.originFileObj);
+        getBase64(file.file.originFileObj).then(res => {
+            onUpload(res);
+        })
+        console.log('handleChange', file);
+      }
 
     return (
         <>
-          <Modal title="查询游戏"
+          <Modal title="上传or查询游戏图片"
             footer={null}
             open={open}
             onOk={onOk}
             onCancel={onCancel}>
+
+            <Upload
+                onPreview={handlePreview}
+                onChange={handleChange}>
+                <Button>点击我上传图片</Button>
+            </Upload>
+            <br/>
             <Search
               width={300}
               allowClear
