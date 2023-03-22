@@ -56,8 +56,8 @@ export default function Home() {
           <div className={styles.gameName}>Nomination</div>
         </div>
         <div className={styles.nomination}>
-          <p className={styles.nominateText} contenteditable="true">"啊啊啊啊啊啊啊！（点我修改）"</p>
-          <p className={styles.nominee} contenteditable="true">——桶GN</p>
+          <p className={styles.nominateText} contentEditable={true} suppressContentEditableWarning={true}>&quot;不配文不算提交啊（点我修改）&quot;</p>
+          <p className={styles.nominee} contentEditable={true} suppressContentEditableWarning={true}>——桶</p>
         </div>
         <GamePopup open={isModalOpen} onOk={handleOk} onCancel={handleCancel}/>
       </main>
