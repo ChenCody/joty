@@ -12,7 +12,7 @@ export default function handler(req, res) {
 
     getGameList(client, gameName).then(result => {
         res.status(200).json({ result })
-    })
+    });
 }
 async function getGameList(client, gameName) {
     const searchResult = await client.searchGame(gameName);

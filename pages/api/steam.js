@@ -1,6 +1,5 @@
 import SGDB from 'steamgriddb';
 
-
 const STEAM_KEY = '288294d05a528adb651b4d48eccf3ef3';
 
 export default function handler(req, res) {
@@ -21,7 +20,7 @@ async function getGameList(client, gameName) {
 async function getGameImage(client, gameName) {
     const searchResult = await getGameList(client, gameName);
     if (searchResult.length > 0) {
-        const gameInfo = await client.getGrids({type: 'game', id: searchResult[0].id});
+        const gameInfo = await client.getGrids({ type: 'game', id: searchResult[0].id });
         return gameInfo;
     }
     else {
