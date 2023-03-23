@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Input, Button, Image, Modal, Spin, Alert, Upload, UploadOutlined } from 'antd';
+import { Input, Button, Image, Modal, Spin, Alert, Upload, Radio } from 'antd';
 import axios from 'axios';
 const { Search } = Input;
 
 export default function GamePopup({open, onOk, onCancel, onUpload}) {
     const [searchGameList, setGameList] = useState([]);
     const [gameInfoList, setGameInfoList] = useState([]);
+    const [direction, setDirection] = useState(1);
     const [alertText, setAlertText] = useState('');
   
     const buttonClick = (gameInfo) => {
@@ -33,7 +34,7 @@ export default function GamePopup({open, onOk, onCancel, onUpload}) {
     });
   
     const selectImage = (game) => {
-        onOk(game);
+        onOk({...game, direction});
     };
     const gameLoop = [];
     gameInfoList.forEach((game,index) => {
@@ -79,16 +80,19 @@ export default function GamePopup({open, onOk, onCancel, onUpload}) {
             reader.onload = () => resolve(reader.result);
             reader.onerror = (error) => reject(error);
     });
-      const handlePreview = (file) => {
+    const handlePreview = (file) => {
 
-      }
-      const handleChange = (file) => {
-        console.log(file.file.originFileObj);
+    }
+    const handleChange = (file) => {
         getBase64(file.file.originFileObj).then(res => {
-            onUpload(res);
+            onUpload({url: res, direction});
         })
-        console.log('handleChange', file);
-      }
+    }
+
+    const onChange = (e) => {
+        setDirection(e.target.value);
+    }
+
 
     return (
         <>
@@ -97,7 +101,11 @@ export default function GamePopup({open, onOk, onCancel, onUpload}) {
             open={open}
             onOk={onOk}
             onCancel={onCancel}>
-
+            <Radio.Group onChange={onChange} value={direction}>
+                <Radio value={1}>竖向</Radio>
+                <Radio value={2}>横向</Radio>
+            </Radio.Group>
+            <br/>
             <Upload
                 onPreview={handlePreview}
                 onChange={handleChange}>
